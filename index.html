@@ -3,14 +3,58 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unity Web Player | Nodi</title>
+    <style>
+      body {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background-color: #282c34; /* Nice, non-white background */
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      header {
+        padding: 20px;
+        font-size: 36px;
+        font-weight: bold;
+      }
+      #startButton {
+        padding: 10px 20px;
+        font-size: 24px;
+        cursor: pointer;
+        border: none;
+        background-color: #ff6600;
+        color: white;
+        border-radius: 5px;
+        margin: 20px auto;
+      }
+      #gameContainer {
+        display: none; /* Hide the game canvas until the button is clicked */
+      }
+      canvas {
+        width: 1080px;
+        height: 1920px;
+        background: #231F20;
+      }
+    </style>
   </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1" style="width: 1080px; height: 1920px; background: #231F20"></canvas>
+  <body>
+    <!-- Header -->
+    <header>Nodi</header>
+    
+    <!-- Start Button -->
+    <button id="startButton">Start Game</button>
+    
+    <!-- Game Container (hidden initially) -->
+    <div id="gameContainer">
+      <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+    </div>
+    
     <script src="Build/MMGames.loader.js"></script>
     <script>
+      // Mobile device adjustments
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -24,17 +68,25 @@
         document.body.style.textAlign = "left";
       }
 
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/MMGames.data",
-        frameworkUrl: "Build/MMGames.framework.js",
-        codeUrl: "Build/MMGames.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "MMGames",
-        productName: "Nodi",
-        productVersion: "0.3.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      // Start the game when the button is clicked
+      document.getElementById("startButton").addEventListener("click", function() {
+        // Hide the start button and show the game container
+        this.style.display = "none";
+        document.getElementById("gameContainer").style.display = "block";
+
+        // Initialize the Unity WebGL instance
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+          arguments: [],
+          dataUrl: "Build/MMGames.data",
+          frameworkUrl: "Build/MMGames.framework.js",
+          codeUrl: "Build/MMGames.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "MMGames",
+          productName: "Nodi",
+          productVersion: "0.3.0",
+        }).catch((error) => {
+          console.error("Unity failed to load:", error);
+        });
       });
     </script>
   </body>
