@@ -64,23 +64,25 @@
 
   <script src="Build/MMGames.loader.js"></script>
   <script>
-    document.getElementById("startButton").addEventListener("click", function () {
-      document.getElementById("gameContainer").style.display = "block";
-      this.style.display = "none";
-      let canvas = document.querySelector("#unity-canvas");
-      canvas.width = Math.round(1080 * 0.9);  // 10% smaller
-      canvas.height = Math.round(1920 * 0.9); // 10% smaller
-      createUnityInstance(canvas, {
-        arguments: [],
-        dataUrl: "Build/MMGames.data",
-        frameworkUrl: "Build/MMGames.framework.js",
-        codeUrl: "Build/MMGames.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "MMGames",
-        productName: "Nodi",
-        productVersion: "0.4.0",
+      document.getElementById("startButton").addEventListener("click", function () {
+        document.getElementById("gameContainer").style.display = "block";
+        this.style.display = "none";
+
+        let canvas = document.querySelector("#unity-canvas");
+        canvas.width = Math.round(1080 * 0.9);  // 10% smaller
+        canvas.height = Math.round(1920 * 0.9); // 10% smaller
+
+        createUnityInstance(canvas, {
+          arguments: [],
+          dataUrl: "Build/MMGames.data",
+          frameworkUrl: "Build/MMGames.framework.js",
+          codeUrl: "Build/MMGames.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "MMGames",
+          productName: "Nodi",
+          productVersion: "0.4.0",
+        });
       });
-    });
   </script>
 </body>
 
