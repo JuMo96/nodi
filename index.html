@@ -44,7 +44,7 @@
 </head>
 <body>
     <h1>Nodi</h1>
-    <p>by MMGames</p>
+    <p>A unique puzzle game by MMGames</p>
 
     <!-- Start Button -->
     <button id="startButton">Start Game</button>
@@ -59,9 +59,7 @@
         document.getElementById("startButton").addEventListener("click", function() {
             document.getElementById("gameContainer").style.display = "block";
             this.style.display = "none";
-            let canvas = document.querySelector("#unity-canvas");
-            canvas.width = Math.round(1080 * 0.9);  // 10% smaller
-            canvas.height = Math.round(1920 * 0.9); // 10% smaller
+
             createUnityInstance(document.querySelector("#unity-canvas"), {
                 arguments: [],
                 dataUrl: "Build/MMGames.data",
@@ -70,7 +68,7 @@
                 streamingAssetsUrl: "StreamingAssets",
                 companyName: "MMGames",
                 productName: "Nodi",
-                productVersion: "0.4.0",
+                productVersion: "0.3.0",
             });
         });
     </script>
