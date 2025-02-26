@@ -1,97 +1,132 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unity Web Player | Nodi</title>
-    <style>
-      body {
-        text-align: center;
-        margin: 0;
-        padding: 0;
-        background-color: #282c34; /* Nice dark background */
-        color: white;
-        font-family: Arial, sans-serif;
-      }
-      header {
-        padding: 20px;
-        font-size: 36px;
-        font-weight: bold;
-      }
-      #startButton {
-        padding: 10px 20px;
-        font-size: 24px;
-        cursor: pointer;
-        border: none;
-        background-color: #ff6600;
-        color: white;
-        border-radius: 5px;
-        margin: 20px auto;
-      }
-      #gameContainer {
-        display: none; /* Hide game canvas until start button is pressed */
-      }
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Firebase Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+  <script>
+    // TODO: Replace the following with your app's Firebase project configuration.
+    // See: https://firebase.google.com/docs/web/setup
+    const firebaseConfig = {
+      apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
+      authDomain: "nodi-15a4f.firebaseapp.com",
+      projectId: "nodi-15a4f",
+      storageBucket: "nodi-15a4f.firebasestorage.app",
+      messagingSenderId: "809714037577",
+      appId: "1:809714037577:web:f7a39128ba243523b3e098",
+      measurementId: "G-4TSNNW8JWJ"
+    };
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    // Initialize Analytics and log a custom page view event (Firebase Analytics automatically logs a page_view event, too)
+    firebase.analytics();
+    firebase.analytics().logEvent('page_view_tracker');
+  </script>
+
+  <title>Unity Web Player | Nodi</title>
+  <style>
+    body {
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #282c34;
+      /* Nice dark background */
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    #startButton {
+      padding: 10px 20px;
+      font-size: 24px;
+      cursor: pointer;
+      border: none;
+      background-color: #ff6600;
+      color: white;
+      border-radius: 5px;
+      margin: 20px auto;
+    }
+
+    #gameContainer {
+      display: none;
+      /* Hide game canvas until start button is pressed */
+    }
+
+    canvas {
+      width: 1080px;
+      height: 1920px;
+      background: #231F20;
+    }
+
+    /* Optional: Adjust canvas styling for smaller screens via media query */
+    @media (max-width: 768px) {
       canvas {
-        width: 1080px;
-        height: 1920px;
-        background: #231F20;
+        width: 90%;
+        height: auto;
       }
-      /* Optional: Adjust canvas styling for smaller screens via media query */
-      @media (max-width: 768px) {
-        canvas {
-          width: 90%;
-          height: auto;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Start Button -->
-    <button id="startButton">Start Game</button>
+    }
+  </style>
+</head>
 
-    <!-- Game Container (initially hidden) -->
-    <div id="gameContainer">
-      <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
-    </div>
+<body>
+  <!-- Start Button -->
+  <button id="startButton">Start Game</button>
 
-    <script src="Build/MMGames.loader.js"></script>
-    <script>
-      // Mobile device adjustments to center the canvas
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+  <!-- Game Container (initially hidden) -->
+  <div id="gameContainer">
+    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+  </div>
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "90%";       // Set canvas width to 90% of viewport
-        canvas.style.height = "auto";      // Let height adjust automatically
-        canvas.style.display = "block";    // Ensures it behaves like a block element
-        canvas.style.margin = "0 auto";    // Center the canvas horizontally
-        // Removed fixed positioning to allow centering
-      }
+  <script src="Build/MMGames.loader.js"></script>
+  <script>
+    // Mobile device adjustments to center the canvas
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      var meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+      document.getElementsByTagName('head')[0].appendChild(meta);
 
-      // Start the game when the button is clicked
-      document.getElementById("startButton").addEventListener("click", function() {
-        // Hide the start button and show the game container
-        this.style.display = "none";
-        document.getElementById("gameContainer").style.display = "block";
+      var canvas = document.querySelector("#unity-canvas");
+      canvas.style.width = "90%";       // Set canvas width to 90% of viewport
+      canvas.style.height = "auto";      // Let height adjust automatically
+      canvas.style.display = "block";    // Ensures it behaves like a block element
+      canvas.style.margin = "0 auto";    // Center the canvas horizontally
+    }
 
-        // Initialize the Unity WebGL instance
-        createUnityInstance(document.querySelector("#unity-canvas"), {
-          arguments: [],
-          dataUrl: "Build/MMGames.data",
-          frameworkUrl: "Build/MMGames.framework.js",
-          codeUrl: "Build/MMGames.wasm",
-          streamingAssetsUrl: "StreamingAssets",
-          companyName: "MMGames",
-          productName: "Nodi",
-          productVersion: "0.3.0",
-        }).catch((error) => {
-          console.error("Unity failed to load:", error);
-        });
+    // Start the game when the button is clicked
+    document.getElementById("startButton").addEventListener("click", function () {
+      // Hide the start button and show the game container
+      this.style.display = "none";
+      document.getElementById("gameContainer").style.display = "block";
+
+      // Initialize the Unity WebGL instance
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/MMGames.data",
+        frameworkUrl: "Build/MMGames.framework.js",
+        codeUrl: "Build/MMGames.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "MMGames",
+        productName: "Nodi",
+        productVersion: "0.3.0",
+      }).catch((error) => {
+        console.error("Unity failed to load:", error);
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
