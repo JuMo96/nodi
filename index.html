@@ -3,39 +3,235 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Responsive viewport for all devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Unity Web Player | Nodi</title>
+    <style>
+      body {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background-color: #282c34; /* Dark background */
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+      }
+      
+      header {
+        padding: 20px;
+        font-size: 36px;
+        font-weight: bold;
+      }
+      
+      #startButton {
+        padding: 10px 20px;
+        font-size: 24px;
+        cursor: pointer;
+        border: none;
+        background-color: #ff6600;
+        color: white;
+        border-radius: 5px;
+        margin: 20px auto;
+        display: block;
+      }
+      
+      /* Content container for game and changelog */
+      #contentContainer {
+        display: none; /* Hidden until Start button is clicked */
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column; /* Default mobile: column layout */
+      }
+      
+      /* Game container fills available space and positions its canvas relatively */
+      #gameContainer {
+        flex: 1;
+        position: relative;
+      }
+      
+      canvas {
+        background: #231F20;
+      }
+      
+      /* Base changelog styling */
+      #changelogSection {
+        text-align: left;
+        background: #333;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 20px;
+      }
+      #changelogSection h2 {
+        margin-top: 0;
+        font-size: 1.5em;
+        border-bottom: 1px solid #555;
+        padding-bottom: 5px;
+      }
+      #changelogSection ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      #changelogSection li {
+        margin-bottom: 5px;
+        font-size: 0.9em;
+      }
+      
+      /* Desktop layout: changelog as left sidebar */
+      @media (min-width: 768px) {
+        #contentContainer {
+          flex-direction: row;
+        }
+        /* Place changelog to the left */
+        #changelogSection {
+          order: 1;
+          width: 300px;
+          height: 100%;
+          overflow-y: auto;
+          margin: 0;
+          padding: 20px;
+        }
+        /* Game container goes to the right */
+        #gameContainer {
+          order: 2;
+        }
+      }
+      
+      /* Mobile layout: changelog at the bottom */
+      @media (max-width: 767px) {
+        /* Order: game container on top, changelog below */
+        #gameContainer {
+          order: 1;
+        }
+        #changelogSection {
+          order: 2;
+          width: 100%;
+          max-height: 30vh;
+          overflow-y: auto;
+          margin: 0;
+          padding: 10px;
+        }
+      }
+    </style>
+    
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script>
+      // Firebase configuration (replace with your project's config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
+        authDomain: "nodi-15a4f.firebaseapp.com",
+        projectId: "nodi-15a4f",
+        storageBucket: "nodi-15a4f.firebasestorage.app",
+        messagingSenderId: "809714037577",
+        appId: "1:809714037577:web:f7a39128ba243523b3e098",
+        measurementId: "G-4TSNNW8JWJ"
+      };
+      
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+      firebase.analytics().logEvent('page_view_tracker');
+    </script>
   </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1" style="width: 1080px; height: 1920px; background: #231F20"></canvas>
+  <body>
+    <!-- Start Button -->
+    <button id="startButton">Start Game</button>
+    
+    <!-- Content Container for Game and Changelog -->
+    <div id="contentContainer">
+      <!-- Game Container -->
+      <div id="gameContainer">
+        <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+      </div>
+      <!-- Changelog Section -->
+      <div id="changelogSection">
+        <h2>Changelog</h2>
+        <ul>
+          <li>[3/12/25] v0.5.0</li>
+          <li>- New Chapter Selection Menu.</li>
+          <li>- New Level Selector Menu with Level Previews.</li>
+          <li>- New 24 Levels, 8 per Chapter.</li>
+          <li>- New UI Transitions.</li>
+          <li>- Total Moves are now tracked.</li>
+        </ul>
+        <ul>
+          <li>[2/28/25] v0.4.2</li>
+          <li>- New Level Completed UI.</li>
+          <li>- Track level score based on times colors are swapped.</li>
+          <li>- Add cheerful text post level completion.</li>
+          <li>- Adjusted settings menu button design.</li>
+          <li>- Bug fixes related to untappable areas.</li>
+        </ul>
+        <ul>
+          <li>[2/27/25] v0.4.1</li>
+          <li>- Adjust background color.</li>
+          <li>- Add new settings menu (WIP).</li>
+          <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color swapped.</li>
+          <li>- Add a restart level option in the settings.</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Unity Loader -->
     <script src="Build/MMGames.loader.js"></script>
     <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
-
-        document.body.style.textAlign = "left";
+      // Function to resize the canvas to always fit its game container
+      // while preserving the 1080x1920 aspect ratio.
+      function resizeCanvas() {
+        var canvas = document.getElementById("unity-canvas");
+        if (!canvas) return;
+        var gameWidth = 1080;
+        var gameHeight = 1920;
+        var gameContainer = document.getElementById("gameContainer");
+        var availableWidth = gameContainer.clientWidth;
+        var availableHeight = gameContainer.clientHeight;
+        var scale = Math.min(availableWidth / gameWidth, availableHeight / gameHeight);
+        var newWidth = gameWidth * scale;
+        var newHeight = gameHeight * scale;
+        canvas.style.width = newWidth + "px";
+        canvas.style.height = newHeight + "px";
+        // Center the canvas within its container.
+        canvas.style.position = "absolute";
+        canvas.style.left = (availableWidth - newWidth) / 2 + "px";
+        canvas.style.top = (availableHeight - newHeight) / 2 + "px";
       }
-
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/MMGames.data",
-        frameworkUrl: "Build/MMGames.framework.js",
-        codeUrl: "Build/MMGames.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "MMGames",
-        productName: "Nodi",
-        productVersion: "0.3.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      
+      // Listen for window resize events.
+      window.addEventListener("resize", resizeCanvas);
+      
+      // Start the game when the Start button is clicked.
+      document.getElementById("startButton").addEventListener("click", function () {
+        // Hide the start button.
+        this.style.display = "none";
+        // Show the main content container.
+        document.getElementById("contentContainer").style.display = "flex";
+        // Adjust the canvas based on the game container size.
+        resizeCanvas();
+        
+        // Initialize the Unity WebGL instance.
+        createUnityInstance(document.getElementById("unity-canvas"), {
+          arguments: [],
+          dataUrl: "Build/MMGames.data",
+          frameworkUrl: "Build/MMGames.framework.js",
+          codeUrl: "Build/MMGames.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "MMGames",
+          productName: "Nodi",
+          productVersion: "0.5.0",
+        }).catch((error) => {
+          console.error("Unity failed to load:", error);
+        });
       });
     </script>
+    
+    <footer>
+      <a href="https://hits.seeyoufarm.com">
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjumo96.github.io%2Fnodi&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="hit counter" />
+      </a>
+    </footer>
   </body>
 </html>
