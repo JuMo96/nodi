@@ -8,7 +8,6 @@
     <title>Unity Web Player | Nodi</title>
     <style>
       body {
-        text-align: center;
         margin: 0;
         padding: 0;
         background-color: #282c34; /* Dark background */
@@ -18,14 +17,16 @@
         width: 100vw;
         height: 100vh;
       }
-      
-      header {
-        padding: 20px;
-        font-size: 36px;
-        font-weight: bold;
+      /* Landing page styling */
+      #landingPage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
       }
-      
-      #startButton {
+      /* Default button styling */
+      button {
         padding: 10px 20px;
         font-size: 24px;
         cursor: pointer;
@@ -36,33 +37,20 @@
         margin: 20px auto;
         display: block;
       }
-      
-      /* Content container for game and changelog */
-      #contentContainer {
-        display: none; /* Hidden until Start button is clicked */
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column; /* Default mobile: column layout */
+      /* Smaller Toggle Changelog button */
+      #toggleChangelogButton {
+        padding: 5px 10px;
+        font-size: 16px;
       }
-      
-      /* Game container fills available space and positions its canvas relatively */
-      #gameContainer {
-        flex: 1;
-        position: relative;
-      }
-      
-      canvas {
-        background: #231F20;
-      }
-      
-      /* Base changelog styling */
+      /* Changelog Section styling */
       #changelogSection {
+        display: none; /* Hidden by default, toggled via button */
         text-align: left;
         background: #333;
         border-radius: 5px;
         padding: 10px;
         margin: 20px;
+        max-width: 90%;
       }
       #changelogSection h2 {
         margin-top: 0;
@@ -78,41 +66,15 @@
         margin-bottom: 5px;
         font-size: 0.9em;
       }
-      
-      /* Desktop layout: changelog as left sidebar */
-      @media (min-width: 768px) {
-        #contentContainer {
-          flex-direction: row;
-        }
-        /* Place changelog to the left */
-        #changelogSection {
-          order: 1;
-          width: 300px;
-          height: 100%;
-          overflow-y: auto;
-          margin: 0;
-          padding: 20px;
-        }
-        /* Game container goes to the right */
-        #gameContainer {
-          order: 2;
-        }
+      /* Game container styling */
+      #gameContainer {
+        display: none; /* Hidden until the game starts */
+        width: 100%;
+        height: 100%;
+        position: relative;
       }
-      
-      /* Mobile layout: changelog at the bottom */
-      @media (max-width: 767px) {
-        /* Order: game container on top, changelog below */
-        #gameContainer {
-          order: 1;
-        }
-        #changelogSection {
-          order: 2;
-          width: 100%;
-          max-height: 30vh;
-          overflow-y: auto;
-          margin: 0;
-          padding: 10px;
-        }
+      canvas {
+        background: #231F20;
       }
     </style>
     
@@ -138,16 +100,10 @@
     </script>
   </head>
   <body>
-    <!-- Start Button -->
-    <button id="startButton">Start Game</button>
-    
-    <!-- Content Container for Game and Changelog -->
-    <div id="contentContainer">
-      <!-- Game Container -->
-      <div id="gameContainer">
-        <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
-      </div>
-      <!-- Changelog Section -->
+    <!-- Landing Page: Visible on page load -->
+    <div id="landingPage">
+      <button id="startButton">Start Game</button>
+      <button id="toggleChangelogButton">Show Changelog</button>
       <div id="changelogSection">
         <h2>Changelog</h2>
         <ul>
@@ -176,11 +132,27 @@
       </div>
     </div>
     
+    <!-- Game Container: Hidden on page load -->
+    <div id="gameContainer">
+      <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+    </div>
+    
     <!-- Unity Loader -->
     <script src="Build/MMGames.loader.js"></script>
     <script>
-      // Function to resize the canvas to always fit its game container
-      // while preserving the 1080x1920 aspect ratio.
+      // Toggle the changelog visibility.
+      document.getElementById("toggleChangelogButton").addEventListener("click", function () {
+        var changelogSection = document.getElementById("changelogSection");
+        if (changelogSection.style.display === "block") {
+          changelogSection.style.display = "none";
+          this.textContent = "Show Changelog";
+        } else {
+          changelogSection.style.display = "block";
+          this.textContent = "Hide Changelog";
+        }
+      });
+      
+      // Function to resize the canvas while preserving the 1080x1920 aspect ratio.
       function resizeCanvas() {
         var canvas = document.getElementById("unity-canvas");
         if (!canvas) return;
@@ -200,18 +172,16 @@
         canvas.style.top = (availableHeight - newHeight) / 2 + "px";
       }
       
-      // Listen for window resize events.
       window.addEventListener("resize", resizeCanvas);
       
-      // Start the game when the Start button is clicked.
+      // Start the game when the Start Game button is clicked.
       document.getElementById("startButton").addEventListener("click", function () {
-        // Hide the start button.
-        this.style.display = "none";
-        // Show the main content container.
-        document.getElementById("contentContainer").style.display = "flex";
-        // Adjust the canvas based on the game container size.
+        // Hide the entire landing page (buttons and changelog).
+        document.getElementById("landingPage").style.display = "none";
+        // Show the game container.
+        document.getElementById("gameContainer").style.display = "block";
+        // Adjust the canvas.
         resizeCanvas();
-        
         // Initialize the Unity WebGL instance.
         createUnityInstance(document.getElementById("unity-canvas"), {
           arguments: [],
