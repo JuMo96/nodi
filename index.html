@@ -1,207 +1,243 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <!-- Responsive viewport for all devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Unity Web Player | Nodi</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: #282c34; /* Dark background */
-        color: white;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        width: 100vw;
-        height: 100vh;
-      }
-      /* Landing page styling */
-      #landingPage {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-      /* Default button styling */
-      button {
-        padding: 10px 20px;
-        font-size: 24px;
-        cursor: pointer;
-        border: none;
-        background-color: #ff6600;
-        color: white;
-        border-radius: 5px;
-        margin: 20px auto;
-        display: block;
-      }
-      /* Smaller Toggle Changelog button */
-      #toggleChangelogButton {
-        padding: 5px 10px;
-        font-size: 16px;
-      }
-      /* Changelog Section styling */
-      #changelogSection {
-        display: none; /* Hidden by default, toggled via button */
-        text-align: left;
-        background: #333;
-        border-radius: 5px;
-        padding: 10px;
-        margin: 20px;
-        max-width: 90%;
-      }
-      #changelogSection h2 {
-        margin-top: 0;
-        font-size: 1.5em;
-        border-bottom: 1px solid #555;
-        padding-bottom: 5px;
-      }
-      #changelogSection ul {
-        list-style-type: none;
-        padding-left: 0;
-      }
-      #changelogSection li {
-        margin-bottom: 5px;
-        font-size: 0.9em;
-      }
-      /* Game container styling */
-      #gameContainer {
-        display: none; /* Hidden until the game starts */
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
-      canvas {
-        background: #231F20;
-      }
-    </style>
-    
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
-    <script>
-      // Firebase configuration (replace with your project's config)
-      const firebaseConfig = {
-        apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
-        authDomain: "nodi-15a4f.firebaseapp.com",
-        projectId: "nodi-15a4f",
-        storageBucket: "nodi-15a4f.firebasestorage.app",
-        messagingSenderId: "809714037577",
-        appId: "1:809714037577:web:f7a39128ba243523b3e098",
-        measurementId: "G-4TSNNW8JWJ"
-      };
-      
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-      firebase.analytics().logEvent('page_view_tracker');
-    </script>
-  </head>
-  <body>
-    <!-- Landing Page: Visible on page load -->
-    <div id="landingPage">
-      <button id="startButton">Start Game</button>
-      <button id="toggleChangelogButton">Show Changelog</button>
-      <div id="changelogSection">
-        <h2>Changelog</h2>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!-- Responsive viewport for all devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Unity Web Player | Nodi</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #282c34;
+      /* Dark background */
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Landing page styling */
+    #landingPage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* Default button styling */
+    button {
+      padding: 10px 20px;
+      font-size: 24px;
+      cursor: pointer;
+      border: none;
+      background-color: #ff6600;
+      color: white;
+      border-radius: 5px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    /* Smaller Toggle Changelog button */
+    #toggleChangelogButton {
+      padding: 5px 10px;
+      font-size: 16px;
+    }
+
+    /* Changelog Section styling */
+    #changelogSection {
+      display: none;
+      /* Hidden by default, toggled via button */
+      text-align: left;
+      background: #333;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 20px;
+      max-width: 90%;
+    }
+
+    #changelogSection h2 {
+      margin-top: 0;
+      font-size: 1.5em;
+      border-bottom: 1px solid #555;
+      padding-bottom: 5px;
+    }
+
+    #changelogSection ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    #changelogSection li {
+      margin-bottom: 5px;
+      font-size: 0.9em;
+    }
+
+    /* Game container styling */
+    #gameContainer {
+      display: none;
+      /* Hidden until the game starts */
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    canvas {
+      background: #231F20;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      background-color: #282c34;
+      /* or another contrasting color */
+      padding: 10px 0;
+      z-index: 1000;
+    }
+  </style>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+  <script>
+    // Firebase configuration (replace with your project's config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
+      authDomain: "nodi-15a4f.firebaseapp.com",
+      projectId: "nodi-15a4f",
+      storageBucket: "nodi-15a4f.firebasestorage.app",
+      messagingSenderId: "809714037577",
+      appId: "1:809714037577:web:f7a39128ba243523b3e098",
+      measurementId: "G-4TSNNW8JWJ"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    firebase.analytics().logEvent('page_view_tracker');
+  </script>
+</head>
+
+<body>
+  <!-- Landing Page: Visible on page load -->
+  <div id="landingPage">
+    <button id="startButton">Start Game</button>
+    <button id="toggleChangelogButton">Show Changelog</button>
+    <div id="changelogSection">
+      <h2>Changelog</h2>
+      <ul>
         <ul>
-          <li>[3/12/25] v0.5.0</li>
-          <li>- New Chapter Selection Menu.</li>
-          <li>- New Level Selector Menu with Level Previews.</li>
-          <li>- New 24 Levels, 8 per Chapter.</li>
-          <li>- New UI Transitions.</li>
-          <li>- Total Moves are now tracked.</li>
+          <li>[3/15/25] v0.5.4</li>
+          <li>- Improve Chapter Select Scrolling.</li>
+          <li>- Improve FTUE funnel. </li>
+          <li>- Chapter and Level Select should be more clear.</li>
         </ul>
-        <ul>
-          <li>[2/28/25] v0.4.2</li>
-          <li>- New Level Completed UI.</li>
-          <li>- Track level score based on times colors are swapped.</li>
-          <li>- Add cheerful text post level completion.</li>
-          <li>- Adjusted settings menu button design.</li>
-          <li>- Bug fixes related to untappable areas.</li>
-        </ul>
-        <ul>
-          <li>[2/27/25] v0.4.1</li>
-          <li>- Adjust background color.</li>
-          <li>- Add new settings menu (WIP).</li>
-          <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color swapped.</li>
-          <li>- Add a restart level option in the settings.</li>
-        </ul>
-      </div>
+        <li>[3/12/25] v0.5.0</li>
+        <li>- New Chapter Selection Menu.</li>
+        <li>- New Level Selector Menu with Level Previews.</li>
+        <li>- New 24 Levels, 8 per Chapter.</li>
+        <li>- New UI Transitions.</li>
+        <li>- Total Moves are now tracked.</li>
+      </ul>
+      <ul>
+        <li>[2/28/25] v0.4.2</li>
+        <li>- New Level Completed UI.</li>
+        <li>- Track level score based on times colors are swapped.</li>
+        <li>- Add cheerful text post level completion.</li>
+        <li>- Adjusted settings menu button design.</li>
+        <li>- Bug fixes related to untappable areas.</li>
+      </ul>
+      <ul>
+        <li>[2/27/25] v0.4.1</li>
+        <li>- Adjust background color.</li>
+        <li>- Add new settings menu (WIP).</li>
+        <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color
+          swapped.</li>
+        <li>- Add a restart level option in the settings.</li>
+      </ul>
     </div>
-    
-    <!-- Game Container: Hidden on page load -->
-    <div id="gameContainer">
-      <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
-    </div>
-    
-    <!-- Unity Loader -->
-    <script src="Build/MMGames.loader.js"></script>
-    <script>
-      // Toggle the changelog visibility.
-      document.getElementById("toggleChangelogButton").addEventListener("click", function () {
-        var changelogSection = document.getElementById("changelogSection");
-        if (changelogSection.style.display === "block") {
-          changelogSection.style.display = "none";
-          this.textContent = "Show Changelog";
-        } else {
-          changelogSection.style.display = "block";
-          this.textContent = "Hide Changelog";
-        }
-      });
-      
-      // Function to resize the canvas while preserving the 1080x1920 aspect ratio.
-      function resizeCanvas() {
-        var canvas = document.getElementById("unity-canvas");
-        if (!canvas) return;
-        var gameWidth = 1080;
-        var gameHeight = 1920;
-        var gameContainer = document.getElementById("gameContainer");
-        var availableWidth = gameContainer.clientWidth;
-        var availableHeight = gameContainer.clientHeight;
-        var scale = Math.min(availableWidth / gameWidth, availableHeight / gameHeight);
-        var newWidth = gameWidth * scale;
-        var newHeight = gameHeight * scale;
-        canvas.style.width = newWidth + "px";
-        canvas.style.height = newHeight + "px";
-        // Center the canvas within its container.
-        canvas.style.position = "absolute";
-        canvas.style.left = (availableWidth - newWidth) / 2 + "px";
-        canvas.style.top = (availableHeight - newHeight) / 2 + "px";
+  </div>
+
+  <!-- Game Container: Hidden on page load -->
+  <div id="gameContainer">
+    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+  </div>
+
+  <!-- Unity Loader -->
+  <script src="Build/MMGames.loader.js"></script>
+  <script>
+    // Toggle the changelog visibility.
+    document.getElementById("toggleChangelogButton").addEventListener("click", function () {
+      var changelogSection = document.getElementById("changelogSection");
+      if (changelogSection.style.display === "block") {
+        changelogSection.style.display = "none";
+        this.textContent = "Show Changelog";
+      } else {
+        changelogSection.style.display = "block";
+        this.textContent = "Hide Changelog";
       }
-      
-      window.addEventListener("resize", resizeCanvas);
-      
-      // Start the game when the Start Game button is clicked.
-      document.getElementById("startButton").addEventListener("click", function () {
-        // Hide the entire landing page (buttons and changelog).
-        document.getElementById("landingPage").style.display = "none";
-        // Show the game container.
-        document.getElementById("gameContainer").style.display = "block";
-        // Adjust the canvas.
-        resizeCanvas();
-        // Initialize the Unity WebGL instance.
-        createUnityInstance(document.getElementById("unity-canvas"), {
-          arguments: [],
-          dataUrl: "Build/MMGames.data",
-          frameworkUrl: "Build/MMGames.framework.js",
-          codeUrl: "Build/MMGames.wasm",
-          streamingAssetsUrl: "StreamingAssets",
-          companyName: "MMGames",
-          productName: "Nodi",
-          productVersion: "0.5.0",
-        }).catch((error) => {
-          console.error("Unity failed to load:", error);
-        });
+    });
+
+    // Function to resize the canvas while preserving the 1080x1920 aspect ratio.
+    function resizeCanvas() {
+      var canvas = document.getElementById("unity-canvas");
+      if (!canvas) return;
+      var gameWidth = 1080;
+      var gameHeight = 1920;
+      var gameContainer = document.getElementById("gameContainer");
+      var availableWidth = gameContainer.clientWidth;
+      var availableHeight = gameContainer.clientHeight;
+      var scale = Math.min(availableWidth / gameWidth, availableHeight / gameHeight);
+      var newWidth = gameWidth * scale;
+      var newHeight = gameHeight * scale;
+      canvas.style.width = newWidth + "px";
+      canvas.style.height = newHeight + "px";
+      // Center the canvas within its container.
+      canvas.style.position = "absolute";
+      canvas.style.left = (availableWidth - newWidth) / 2 + "px";
+      canvas.style.top = (availableHeight - newHeight) / 2 + "px";
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    // Start the game when the Start Game button is clicked.
+    document.getElementById("startButton").addEventListener("click", function () {
+      // Hide the entire landing page (buttons and changelog).
+      document.getElementById("landingPage").style.display = "none";
+      // Show the game container.
+      document.getElementById("gameContainer").style.display = "block";
+      // Adjust the canvas.
+      resizeCanvas();
+      // Initialize the Unity WebGL instance.
+      createUnityInstance(document.getElementById("unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/MMGames.data",
+        frameworkUrl: "Build/MMGames.framework.js",
+        codeUrl: "Build/MMGames.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "MMGames",
+        productName: "Nodi",
+        productVersion: "0.5.0",
+      }).catch((error) => {
+        console.error("Unity failed to load:", error);
       });
-    </script>
-    
-    <footer>
-      <a href="https://hits.seeyoufarm.com">
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjumo96.github.io%2Fnodi&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="hit counter" />
-      </a>
-    </footer>
-  </body>
+    });
+  </script>
+
+  <footer>
+    <a href="https://hits.seeyoufarm.com">
+      <img
+        src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjumo96.github.io%2Fnodi&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"
+        alt="hit counter" />
+    </a>
+  </footer>
+</body>
+
 </html>
