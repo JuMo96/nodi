@@ -12,7 +12,6 @@
       margin: 0;
       padding: 0;
       background-color: #282c34;
-      /* Dark background */
       color: white;
       font-family: Arial, sans-serif;
       overflow: hidden;
@@ -20,7 +19,6 @@
       height: 100vh;
     }
 
-    /* Landing page styling */
     #landingPage {
       display: flex;
       flex-direction: column;
@@ -29,7 +27,6 @@
       height: 100vh;
     }
 
-    /* Default button styling */
     button {
       padding: 10px 20px;
       font-size: 24px;
@@ -42,16 +39,13 @@
       display: block;
     }
 
-    /* Smaller Toggle Changelog button */
     #toggleChangelogButton {
       padding: 5px 10px;
       font-size: 16px;
     }
 
-    /* Changelog Section styling */
     #changelogSection {
       display: none;
-      /* Hidden by default, toggled via button */
       text-align: left;
       background: #333;
       border-radius: 5px;
@@ -77,10 +71,8 @@
       font-size: 0.9em;
     }
 
-    /* Game container styling */
     #gameContainer {
       display: none;
-      /* Hidden until the game starts */
       width: 100%;
       height: 100%;
       position: relative;
@@ -97,7 +89,6 @@
       width: 100%;
       text-align: center;
       background-color: #282c34;
-      /* or another contrasting color */
       padding: 10px 0;
       z-index: 1000;
     }
@@ -110,7 +101,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
   <script>
-    // Firebase configuration (replace with your project's config)
     const firebaseConfig = {
       apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
       authDomain: "nodi-15a4f.firebaseapp.com",
@@ -120,8 +110,6 @@
       appId: "1:809714037577:web:f7a39128ba243523b3e098",
       measurementId: "G-4TSNNW8JWJ"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
     firebase.analytics().logEvent('page_view_tracker');
@@ -129,7 +117,6 @@
 </head>
 
 <body>
-  <!-- Landing Page: Visible on page load -->
   <div id="landingPage">
     <button id="startButton">Start Game</button>
     <button id="toggleChangelogButton">Show Changelog</button>
@@ -167,22 +154,18 @@
         <li>[2/27/25] v0.4.1</li>
         <li>- Adjust background color.</li>
         <li>- Add new settings menu (WIP).</li>
-        <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color
-          swapped.</li>
+        <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color swapped.</li>
         <li>- Add a restart level option in the settings.</li>
       </ul>
     </div>
   </div>
 
-  <!-- Game Container: Hidden on page load -->
   <div id="gameContainer">
     <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
   </div>
 
-  <!-- Unity Loader -->
   <script src="Build/MMGames.loader.js"></script>
   <script>
-    // Toggle the changelog visibility.
     document.getElementById("toggleChangelogButton").addEventListener("click", function () {
       var changelogSection = document.getElementById("changelogSection");
       if (changelogSection.style.display === "block") {
@@ -194,7 +177,6 @@
       }
     });
 
-    // Function to resize the canvas while preserving the 1080x1920 aspect ratio.
     function resizeCanvas() {
       var canvas = document.getElementById("unity-canvas");
       if (!canvas) return;
@@ -208,7 +190,6 @@
       var newHeight = gameHeight * scale;
       canvas.style.width = newWidth + "px";
       canvas.style.height = newHeight + "px";
-      // Center the canvas within its container.
       canvas.style.position = "absolute";
       canvas.style.left = (availableWidth - newWidth) / 2 + "px";
       canvas.style.top = (availableHeight - newHeight) / 2 + "px";
@@ -216,15 +197,11 @@
 
     window.addEventListener("resize", resizeCanvas);
 
-    // Start the game when the Start Game button is clicked.
     document.getElementById("startButton").addEventListener("click", function () {
-      // Hide the entire landing page (buttons and changelog).
       document.getElementById("landingPage").style.display = "none";
-      // Show the game container.
+      document.querySelector("footer").style.display = "none";
       document.getElementById("gameContainer").style.display = "block";
-      // Adjust the canvas.
       resizeCanvas();
-      // Initialize the Unity WebGL instance.
       createUnityInstance(document.getElementById("unity-canvas"), {
         arguments: [],
         dataUrl: "Build/MMGames.data",
@@ -242,9 +219,7 @@
 
   <footer>
     <a href="https://hits.seeyoufarm.com">
-      <img
-        src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjumo96.github.io%2Fnodi&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"
-        alt="hit counter" />
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjumo96.github.io%2Fnodi&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" alt="hit counter" />
     </a>
   </footer>
 </body>
