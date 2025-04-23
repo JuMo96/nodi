@@ -125,6 +125,11 @@
     <div id="changelogSection">
       <h2>Changelog</h2>
       <ul>
+        <li>[4/23/25] v0.7.0</li>
+        <li>- New Chapter 4 levels added.</li>
+        <li>- Bug fixes</li>
+      </ul>
+      <ul>
         <li>[3/28/25] v0.6.8</li>
         <li>- New Chapter 1 levels added.</li>
         <li>- Reordered levels to have a better difficulty scaling based on level minimum moves required.</li>
@@ -232,13 +237,11 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MMGames",
         productName: "Nodi",
-        productVersion: "0.5.0",
-      }).catch((error) => {
-        console.error("Unity failed to load:", error);
+        productVersion: "0.7.0",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
       });
-    });
-  </script>
-</body>
-<footer></footer>
-
+    })
+    </script>
+  </body>
 </html>
