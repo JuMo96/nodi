@@ -8,100 +8,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Unity Web Player | Nodi</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #282c34;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      width: 100vw;
-      height: 100vh;
-    }
-
-    #landingPage {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 24px;
-      cursor: pointer;
-      border: none;
-      background-color: #ff6600;
-      color: white;
-      border-radius: 5px;
-      margin: 20px auto;
-      display: block;
-    }
-
-    #toggleChangelogButton {
-      padding: 5px 10px;
-      font-size: 16px;
-    }
-
-    #changelogSection {
-    display: none;
-    text-align: left;
-    background: #333;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 20px;
-    max-width: 90%;
-    max-height: 60vh;      /* Limits the height to 60% of the viewport height */
-    overflow-y: auto;      /* Enables vertical scrolling when content exceeds max-height */
-  }
-
-    #changelogSection h2 {
-      margin-top: 0;
-      font-size: 1.5em;
-      border-bottom: 1px solid #555;
-      padding-bottom: 5px;
-    }
-
-    #changelogSection ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    #changelogSection li {
-      margin-bottom: 5px;
-      font-size: 0.9em;
-    }
-
-    #gameContainer {
-      display: none;
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    canvas {
-      background: #231F20;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      background-color: #282c34;
-      padding: 10px 0;
-      z-index: 1000;
-    }
+    body { margin: 0; padding: 0; background-color: #282c34; color: white; font-family: Arial, sans-serif; overflow: hidden; width: 100vw; height: 100vh; }
+    #landingPage { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    button { padding: 10px 20px; font-size: 24px; cursor: pointer; border: none; background-color: #ff6600; color: white; border-radius: 5px; margin: 20px auto; display: block; }
+    #toggleChangelogButton { padding: 5px 10px; font-size: 16px; }
+    #changelogSection { display: none; text-align: left; background: #333; border-radius: 5px; padding: 10px; margin: 20px; max-width: 90%; max-height: 60vh; overflow-y: auto; }
+    #changelogSection h2 { margin-top: 0; font-size: 1.5em; border-bottom: 1px solid #555; padding-bottom: 5px; }
+    #changelogSection ul { list-style-type: none; padding-left: 0; }
+    #changelogSection li { margin-bottom: 5px; font-size: 0.9em; }
+    #gameContainer { display: none; width: 100%; height: 100%; position: relative; }
+    canvas { background: #231F20; }
+    footer { position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; background-color: #282c34; padding: 10px 0; z-index: 1000; }
   </style>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase (compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyCR8vjYnh0jkrUH24tyo-JrqnHBVd81CrA",
@@ -133,16 +55,16 @@
         <li>[3/28/25] v0.6.8</li>
         <li>- New Chapter 1 levels added.</li>
         <li>- Reordered levels to have a better difficulty scaling based on level minimum moves required.</li>
-        <li>- SFX QoL updates. </li>
+        <li>- SFX QoL updates.</li>
       </ul>
       <ul>
         <li>[3/28/25] v0.6.6</li>
-        <li>- Levels start with a base color now. Intended to cutout unecessary taps for initial node color swaps. Not sure about this though as it removes a satisfying element. </li>
+        <li>- Levels start with a base color now. Intended to cut out unnecessary taps for initial node color swaps. Not sure about this though as it removes a satisfying element.</li>
         <li>- Show minimum moves required to beat a level. Intended to give players a reason to replay the level.</li>
       </ul>
       <ul>
         <li>[3/28/25] v0.6.3</li>
-        <li>- If a chapter is not completed, users now get ushered straight into the level. </li>
+        <li>- If a chapter is not completed, users now get ushered straight into the level.</li>
         <li>- Levels now need to be completed in order.</li>
         <li>- Updated SFX for various buttons and state changes.</li>
         <li>- Improved state handling for post level completion.</li>
@@ -157,7 +79,7 @@
       <ul>
         <li>[3/15/25] v0.5.4</li>
         <li>- Improve Chapter Select Scrolling.</li>
-        <li>- Improve FTUE funnel. </li>
+        <li>- Improve FTUE funnel.</li>
         <li>- Chapter and Level Select should be more clear.</li>
       </ul>
       <ul>
@@ -180,8 +102,7 @@
         <li>[2/27/25] v0.4.1</li>
         <li>- Adjust background color.</li>
         <li>- Add new settings menu (WIP).</li>
-        <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color
-          swapped.</li>
+        <li>- Add background flash effect when a level is completed. Color of the flash is selected based on last color swapped.</li>
         <li>- Add a restart level option in the settings.</li>
       </ul>
     </div>
@@ -193,55 +114,55 @@
 
   <script src="Build/MMGames.loader.js"></script>
   <script>
-    document.getElementById("toggleChangelogButton").addEventListener("click", function () {
-      var changelogSection = document.getElementById("changelogSection");
-      if (changelogSection.style.display === "block") {
-        changelogSection.style.display = "none";
-        this.textContent = "Show Changelog";
-      } else {
-        changelogSection.style.display = "block";
-        this.textContent = "Hide Changelog";
-      }
+    document.getElementById("toggleChangelogButton").addEventListener("click", function() {
+      const sec = document.getElementById("changelogSection");
+      sec.style.display = sec.style.display === "block" ? "none" : "block";
+      this.textContent = sec.style.display === "block" ? "Hide Changelog" : "Show Changelog";
     });
 
     function resizeCanvas() {
-      var canvas = document.getElementById("unity-canvas");
-      if (!canvas) return;
-      var gameWidth = 1080;
-      var gameHeight = 1920;
-      var gameContainer = document.getElementById("gameContainer");
-      var availableWidth = gameContainer.clientWidth;
-      var availableHeight = gameContainer.clientHeight;
-      var scale = Math.min(availableWidth / gameWidth, availableHeight / gameHeight);
-      var newWidth = gameWidth * scale;
-      var newHeight = gameHeight * scale;
-      canvas.style.width = newWidth + "px";
-      canvas.style.height = newHeight + "px";
+      const canvas = document.getElementById("unity-canvas");
+      const container = document.getElementById("gameContainer");
+      const scale = Math.min(container.clientWidth / 1080, container.clientHeight / 1920);
+      canvas.style.width = 1080 * scale + "px";
+      canvas.style.height = 1920 * scale + "px";
       canvas.style.position = "absolute";
-      canvas.style.left = (availableWidth - newWidth) / 2 + "px";
-      canvas.style.top = (availableHeight - newHeight) / 2 + "px";
+      canvas.style.left = (container.clientWidth - 1080 * scale) / 2 + "px";
+      canvas.style.top = (container.clientHeight - 1920 * scale) / 2 + "px";
     }
 
     window.addEventListener("resize", resizeCanvas);
 
-    document.getElementById("startButton").addEventListener("click", function () {
+    document.getElementById("startButton").addEventListener("click", function() {
+      // Prevent running over file:// protocol
+      if (window.location.protocol === 'file:') {
+        alert('WebGL builds must be served over HTTP(S).\nPlease run a local server (e.g., python -m http.server) and open via http://localhost.');
+        return;
+      }
       document.getElementById("landingPage").style.display = "none";
       document.querySelector("footer").style.display = "none";
       document.getElementById("gameContainer").style.display = "block";
       resizeCanvas();
+
+      const buildUrl = "Build";
       createUnityInstance(document.getElementById("unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/MMGames.data",
-        frameworkUrl: "Build/MMGames.framework.js",
-        codeUrl: "Build/MMGames.wasm",
+        dataUrl: `${buildUrl}/MMGames.data`,
+        frameworkUrl: `${buildUrl}/MMGames.framework.js`,
+        codeUrl: `${buildUrl}/MMGames.wasm`,
         streamingAssetsUrl: "StreamingAssets",
         companyName: "MMGames",
         productName: "Nodi",
         productVersion: "0.7.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
-    })
-    </script>
-  </body>
+        Module: {
+          locateFile: path => `${buildUrl}/${path}`
+        }
+      })
+      .then(unity => console.log("Unity loaded!", unity))
+      .catch(err => { console.error("Failed to load WebGL build:", err); alert("Failed to load WebGL build:\n" + (err.message || err)); });
+    });
+  </script>
+
+  <footer><!-- Optional footer content --></footer>
+</body>
+
 </html>
